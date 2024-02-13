@@ -1,6 +1,8 @@
 const express=require("express");
 const mongoose=require("mongoose");
 
+const userRoute=require("././user/routes/userRouter")
+
 const app=express();
 const cors=require("cors");
 const dotenv=require("dotenv");
@@ -23,6 +25,8 @@ mongoose
 .catch((err) => {
     console.log("db not connected");
 });
+
+app.use("/user",userRoute)
 
 
 app.listen(PORT,() => {

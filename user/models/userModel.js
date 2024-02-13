@@ -1,6 +1,6 @@
 const mongoose=require("mongoose");
 const schema=mongoose.Schema;
-const userdata=new schema(
+const userdetails=new schema(
     {
         photo:{
            type:String,
@@ -55,4 +55,4 @@ const userdata=new schema(
    timestamps:true, 
 }
 );
-module.exports=mongoose.model("userdata",userdata);
+module.exports=mongoose.model("userdetails",userdetails);
