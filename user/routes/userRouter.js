@@ -62,6 +62,18 @@ route.get("/getById/:id", async(req,res)=>{
         res.status(201).json(users);
       });
 
+      route.post("/login",async(req,res) => {
+        const users = await userData.findOne(req.body);
+        res.status(201).json(users);
+
+      })
+       
+
+      route.get("/get/users", async (req, res) => {
+        const allusers = await userData.find();
+        res.status(201).json(allusers);
+      });
+
     module.exports = route;
   
   

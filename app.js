@@ -2,6 +2,7 @@ const express=require("express");
 const mongoose=require("mongoose");
 
 const userRoute=require("././user/routes/userRouter")
+const adminRoute=require("./admin/routes/adminRouter")
 
 const app=express();
 const cors=require("cors");
@@ -15,7 +16,7 @@ app.use(cors());
 corsOptions={
     origin:["http://localhost:6000"],
 };
-PORT=6000;
+PORT=6010;
 
 db_Url="mongodb://localhost:27017/politicianback-end";
 
@@ -27,6 +28,7 @@ mongoose
 });
 
 app.use("/user",userRoute)
+app.use("/admin",adminRoute)
 
 
 app.listen(PORT,() => {
