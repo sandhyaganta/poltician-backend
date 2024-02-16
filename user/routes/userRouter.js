@@ -3,6 +3,8 @@ const route=express.Router();
 const userData=require("../models/userModel.js");
 const {json}=require('body-parser');
 const multer=require("multer");
+const jwt=require("jsonwebtoken");
+const verifyToken=require('../../jwt/token.js')
 
 
 const storage=multer.diskStorage({
@@ -42,13 +44,18 @@ route.post("/create",uploads.single("photo"), async( req,res) => {
     }
 });
 
-route.get("/getById/:id", async(req,res)=>{
+route.get("/getById/:id",verifyToken, async(req,res)=>{
+  try{
     const user=await userData.findById(req.params.id);
     res.status(201).json(user);
+  }catch(err){
+    res.status(500).json({err:'user not found'})
+  }
+    
     });
 
 
-    route.put("/updateById/:id",  async (req, res) => {
+    route.put("/updateById/:id", verifyToken, async (req, res) => {
         const users = await userData.findByIdAndUpdate(
           req.params.id,
           { $set: req.body },
@@ -57,19 +64,21 @@ route.get("/getById/:id", async(req,res)=>{
         res.status(201).json(users);
       });
 
-      route.delete("/deleteById/:id",  async (req, res) => {
+      route.delete("/deleteById/:id",verifyToken,  async (req, res) => {
         const users = await userData.findByIdAndDelete(req.params.id);
         res.status(201).json(users);
       });
 
       route.post("/login",async(req,res) => {
         const users = await userData.findOne(req.body);
-        res.status(201).json(users);
+        const secretkey = 'my-secretkey';
+        const token = jwt.sign({"username":req.body.username,"password":req.body.password},secretkey,{ expiresIn:'1h'})
+        res.status(201).json({users,token});
 
       })
        
 
-      route.get("/get/users", async (req, res) => {
+      route.get("/get/users",verifyToken, async (req, res) => {
         const allusers = await userData.find();
         res.status(201).json(allusers);
       });

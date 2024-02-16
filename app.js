@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 corsOptions={
-    origin:["http://localhost:6000"],
+    origin:["http://localhost:6010"],
 };
 PORT=6010;
 
