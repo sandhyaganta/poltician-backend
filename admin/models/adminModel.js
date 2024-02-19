@@ -10,6 +10,9 @@ const admin=new schema(
             type:String,
             required:true,
         }
+       
+
+        
 
 },{
     timestamps:true,

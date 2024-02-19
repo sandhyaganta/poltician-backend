@@ -4,13 +4,14 @@ const adminData=require("../models/adminModel.js");
 const {json}=require('body-parser')
 const jwt=require("jsonwebtoken");
 const verifyToken=require('../../jwt/token.js')
+const multer=require("multer");
 
 
-route.post("/create",(req,res) =>{
-    const admin=new adminData(req.body);
-    admin.save();
-    res.status(201).json(admin) ;
-} );
+route.post("/create",(req,res)=>{
+    const ad=new adminData(req.body);
+    ad.save();
+    res.status(201).json(ad);
+});
 
 
 route.post("/login",async(req,res) => {
