@@ -4,6 +4,9 @@ const mongoose=require("mongoose");
 const userRoute=require("././user/routes/userRouter")
 const adminRoute=require("./admin/routes/adminRouter")
 const adminpostRoute=require("./admin/routes/adminpostRouter")
+const userpostRoute=require("./user/routes/commentsRouter")
+const userlikeRoute=require("./user/routes/likeRouter")
+const usercomplientsRoute=require("./user/routes/complientsRouter")
 
 const app=express();
 const cors=require("cors");
@@ -31,6 +34,9 @@ mongoose
 app.use("/user",userRoute)
 app.use("/admin",adminRoute)
 app.use("/post",adminpostRoute)
+app.use("/userpost",userpostRoute)
+app.use("/userlike",userlikeRoute)
+app.use("/complients",usercomplientsRoute)
 
 
 app.listen(PORT,() => {

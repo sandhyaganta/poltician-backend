@@ -2,18 +2,26 @@ const mongoose=require("mongoose");
 const schema=mongoose.Schema;
 const adminpost=new schema(
     {
-        name:{
+        title:{
             type:String,
             
         },
-         video:{
+         files:{
             type:String,
             
         },
-       
-        photo:{
-            type:String,
-        },
+        type: {
+            type: String,
+            enum: ['photo', 'video'],
+            require: true,
+          },
+       like:{
+        type:Number,
+       },
+       comments:{
+        type:String
+       },
+        
           
 
 },{
