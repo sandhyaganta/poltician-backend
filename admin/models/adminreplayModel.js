@@ -1,8 +1,8 @@
 const mongoose=require("mongoose");
 const schema=mongoose.Schema;
-const usercomplients=new schema(
+const adminreplay=new schema(
     {
-        complients:{
+        replay:{
             type:String,
             required:true,
             
@@ -12,16 +12,19 @@ const usercomplients=new schema(
             required:true,
             
         },
-        userid:{
+        complientid:{
             type:mongoose.Schema.Types.ObjectId,
+            required:true,
             
         },
-            
+         
+       
+       
+          
 
 },{
     timestamps:true,
 
 }
 );
-module.exports=mongoose.model("usercomplients",usercomplients)
-
+module.exports=mongoose.model("adminreplay",adminreplay)

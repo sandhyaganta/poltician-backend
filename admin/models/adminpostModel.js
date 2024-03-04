@@ -17,10 +17,7 @@ const adminpost=new schema(
           },
        like:{
         type:Number,
-       },
-       comments:{
-        type:String
-       },
+       }
         
           
 

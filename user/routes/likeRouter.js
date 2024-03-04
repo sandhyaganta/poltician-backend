@@ -11,12 +11,12 @@ route.post("/like",(req,res)=>{
     res.status(201).json(ad);
 });
 
-route.get("/getlike", async (req, res) => {
+route.get("/getlike",verifyToken, async (req, res) => {
     const alllikes = await userpost.find();
     res.status(201).json(alllikes);
   });
 
-  route.put("/updateById/:id",  async (req, res) => {
+  route.put("/updateById/:id",verifyToken,  async (req, res) => {
     const post = await userpost.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },

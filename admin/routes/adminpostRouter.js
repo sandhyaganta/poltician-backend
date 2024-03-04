@@ -32,12 +32,12 @@ route.post("/video", uploads.single("files"), async (req, res) => {
     return res.status(500).json({ err: "failed to create video" });
   }
 });
-route.get("/get/posts", async (req, res) => {
+route.get("/get/posts",verifyToken, async (req, res) => {
   const allusers = await adminpost.find();
   res.status(201).json(allusers);
 });
 
-route.put("/updateById/:id",  async (req, res) => {
+route.put("/updateById/:id",verifyToken,  async (req, res) => {
   const post = await adminpost.findByIdAndUpdate(
     req.params.id,
     { $set: req.body },
