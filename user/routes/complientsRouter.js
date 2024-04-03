@@ -33,4 +33,23 @@ route.get("/getcomplients",verifyToken ,async (req, res) => {
     });
 });
 
+route.get("/getcomplient",async(req,res) => {
+  const allcomplients=await usercomplientsModel.find();
+  res.status(201).json(allcomplients); 
+
+});
+
+route.get("/getById/:id", async(req,res) =>{
+  try{
+    const complient=await usercomplientsModel.findById(req.params.id);
+  res.status(201).json(complient);
+
+  }
+  catch{
+    res.status(500).json({err:'complient not found'})
+  }
+  
+ 
+})
+
 module.exports = route;

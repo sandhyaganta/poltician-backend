@@ -7,6 +7,11 @@ const adminreplay=new schema(
             required:true,
             
         },
+        role:{
+            type:String,
+            
+            
+        },
         date:{
             type:String,
             required:true,

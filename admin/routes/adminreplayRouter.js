@@ -16,19 +16,20 @@ route.post("/creatreplay", (req, res) => {
 route.get("/getreplay/:id",verifyToken, async (req, res) => {
   console.log(req.params.id, "req.params.id");
   const userId = new mongoose.Types.ObjectId(req.params.id);
-  const allcomments = await adminreplays
+const usercomplients = require("../../user/models/usercomplientsModel.js");
+const allcomments = await usercomplients  
     .aggregate([
       {
         $lookup: {
-          from: "usercomplients",
-          localField: "complientid",
-          foreignField: "_id",
-          as: "usercomplients",
+          from: "adminreplays",
+          localField: "_id",
+          foreignField: "complientid",
+          as: "adminreplay",
         },
       },
       {
         $match: {
-          "usercomplients.userid": userId // assuming req.params.id contains the user's ID
+          "adminreplay.complientid": userId // assuming req.params.id contains the user's ID
         }
       }
     ])
@@ -39,5 +40,15 @@ route.get("/getreplay/:id",verifyToken, async (req, res) => {
       res.send(err);
     });
 });
+
+
+route.get("/get/allreplays",async(req,res)=>{
+  const allreplays=await adminreplays.find();
+  res.status(201).json(allreplays);
+
+})
+
+
+
 
 module.exports = route;
