@@ -8,6 +8,7 @@ const commentsRoute=require("./user/routes/commentsRouter")
 const userlikeRoute=require("./user/routes/likeRouter")
 const usercomplientsRoute=require("./user/routes/complientsRouter")
 const adminreplayRoute=require("./admin/routes/adminreplayRouter")
+const forgotpasswordRoute=require("./forgotpassword/routers/Router")
 
 const app=express();
 const cors=require("cors");
@@ -22,7 +23,9 @@ corsOptions={
     origin:["http://localhost:6010"],
 };
 PORT=6010;
-
+app.listen(PORT,() => {
+    console.log("server start on port 6000");
+})
 db_Url="mongodb://localhost:27017/politicianback-end";
 
 mongoose
@@ -40,8 +43,6 @@ app.use("/comments",commentsRoute)
 app.use("/userlike",userlikeRoute)
 app.use("/complients",usercomplientsRoute)
 app.use("/replay",adminreplayRoute)
+app.use("/",forgotpasswordRoute)
 
 
-app.listen(PORT,() => {
-    console.log("server start on port 6000");
-})
