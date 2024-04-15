@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const schema = mongoose.Schema;
-const comments = new schema(
+const notificationreplay = new schema(
   {
     userid: {
       type: mongoose.Schema.Types.ObjectId,
@@ -8,7 +8,7 @@ const comments = new schema(
     comments: {
       type: String,
     },
-    postid: {
+    notificationid: {
       type: mongoose.Schema.Types.ObjectId,
     },
   },
@@ -16,4 +16,4 @@ const comments = new schema(
     timestamps: true,
   }
 );
-module.exports = mongoose.model("comments", comments);
+module.exports = mongoose.model("notificationreplay", notificationreplay);

@@ -1,55 +1,60 @@
 const express = require("express");
 const route = express.Router();
-// const usercomplients = require("../models/usercomplientsModel.js");
-const { json } = require("body-parser");
-const jwt = require("jsonwebtoken");
 const verifyToken = require("../../jwt/token.js");
-const userdetailsModel = require("../models/userModel.js");
-const usercomplientsModel = require("../models/usercomplientsModel.js");
+const complients = require("../models/complientsModel.js");
 
-route.post("/creatcomplients", (req, res) => {
-  const ad = new usercomplientsModel(req.body);
+route.post("/", (req, res) => {
+  const ad = new complients(req.body);
   ad.save();
-  res.status(201).json(ad);
+  res.status(201).json({ ad });
 });
 
-route.get("/getcomplients",verifyToken ,async (req, res) => {
-  const allcomplients = await usercomplientsModel
+route.get("/", async (req, res) => {
+  const allcomplients = await complients.find();
+  res.status(200).json({ allcomplients });
+});
+
+route.get("/:id", async (req, res) => {
+  try {
+    const complient = await complients.findById(req.params.id);
+    res.status(200).json({ complient });
+  } catch {
+    res.status(500).json({ err: "complient not found" });
+  }
+});
+
+route.put("/:id", verifyToken, async (req, res) => {
+  const complient = await complients.findByIdAndUpdate(
+    req.params.id,
+    { $set: req.body },
+    { new: true }
+  );
+  res.status(201).json(complient);
+});
+
+route.delete("/:id", verifyToken, async (req, res) => {
+  const complient = await complients.findByIdAndDelete(req.params.id);
+  res.status(201).json(complient);
+});
+
+route.get("/user", verifyToken, async (req, res) => {
+  const allcomplients = await complients
     .aggregate([
       {
         $lookup: {
-          from: "userdetails",
+          from: "user",
           localField: "userid",
           foreignField: "_id",
-          as: "complientsdetails",
+          as: "complients",
         },
       },
     ])
     .then((allcomplients) => {
-      res.send(allcomplients);
+      res.status(200).json({ allcomplients });
     })
     .catch((err) => {
-      res.send(err);
+      res.status(500).json({ err: "complient not found" });
     });
 });
-
-route.get("/getcomplient",async(req,res) => {
-  const allcomplients=await usercomplientsModel.find();
-  res.status(201).json(allcomplients); 
-
-});
-
-route.get("/getById/:id", async(req,res) =>{
-  try{
-    const complient=await usercomplientsModel.findById(req.params.id);
-  res.status(201).json(complient);
-
-  }
-  catch{
-    res.status(500).json({err:'complient not found'})
-  }
-  
- 
-})
 
 module.exports = route;
