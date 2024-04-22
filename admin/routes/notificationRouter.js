@@ -35,10 +35,10 @@ route.get("/", verifyToken, async (req, res) => {
   res.status(200).json(allnotification);
 });
 
-route.get("/:id", verifyToken, async (req, res) => {
+route.get("/:id",verifyToken,  async (req, res) => {
   try {
-    const notification = await notification.findById(req.params.id);
-    res.status(201).json(notification);
+    const notification1 = await notification.findById(req.params.id);
+    res.status(201).json(notification1);
   } catch (err) {
     res.status(500).json({ err: "notification not found" });
   }

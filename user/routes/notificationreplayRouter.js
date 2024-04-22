@@ -43,19 +43,14 @@ route.get("/all", verifyToken, async (req, res) => {
     .aggregate([
       {
         $lookup: {
-          from: "notificationreplay",
+          from: "notificationreplays",
           localField: "_id",
           foreignField: "notificationid",
           as: "notifications",
         },
       },
-    ])
-    .then((allnotification) => {
-      res.status(200).json(allnotification);
-    })
-    .catch((err) => {
-      res.status(500).json({ err: "comments not found" });
-    });
+    ]);
+    res.status(200).json(allnotification);
 });
 
 module.exports = route;

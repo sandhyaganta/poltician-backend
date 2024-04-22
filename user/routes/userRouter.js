@@ -54,10 +54,10 @@ route.get("/", verifyToken, async (req, res) => {
   res.status(200).json(allusers);
 });
 
-route.get("/:id", verifyToken, async (req, res) => {
+route.get("/:id", verifyToken,  async (req, res) => {
   try {
-    const user = await user.findById(req.params.id);
-    res.status(201).json(user);
+    const user1 = await user.findById(req.params.id);
+    res.status(201).json(user1);
   } catch (err) {
     res.status(500).json({ err: "user not found" });
   }

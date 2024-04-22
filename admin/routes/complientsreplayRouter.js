@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const route = express.Router();
+const user = require("../../user/models/userModel.js");
 const complientsreplay = require("../models/complientsreplayModel.js");
 const complients = require("../../user/models/complientsModel.js");
 const verifyToken = require("../../jwt/token.js");
@@ -11,9 +12,24 @@ route.post("/", (req, res) => {
   res.status(201).json({ad});
 });
 
-route.get("/", async (req, res) => {
-  const allreplays = await complientsreplay.find();
+route.get("/", verifyToken,async (req, res) => {
+  const allreplays = await complients.find();
   res.status(200).json(allreplays);
+});
+
+route.get("/all", verifyToken, async (req, res) => {
+  const allcomplients = await user
+    .aggregate([
+      {
+        $lookup: {
+          from: "complients",
+          localField: "_id",
+          foreignField: "userid",
+          as: "complient",
+        },
+      },
+    ]);
+    res.status(200).json(allcomplients);
 });
 
 route.get("/:id", verifyToken, async (req, res) => {
@@ -39,30 +55,32 @@ route.delete("/:id", verifyToken, async (req, res) => {
   res.status(201).json(complients);
 });
 
-route.get("/replay/:id", verifyToken, async (req, res) => {
-  const userId = new mongoose.Types.ObjectId(req.params.id);
+route.get("/replay/:id",  verifyToken,async (req, res) => {
+  const complientsid = new mongoose.Types.ObjectId(req.params.id);
+  console.log(complientsid,'complientsid');
   const allcomplients = await complients
     .aggregate([
       {
         $lookup: {
-          from: "complientsreplay",
+          from: "complientsreplays",
           localField: "_id",
-          foreignField: "complientid",
-          as: "complients",
+          foreignField: "complientsid",
+          as: "complientsreplay",
         },
       },
       {
         $match: {
-          "complientsreplay.complientid": userId, // assuming req.params.id contains the user's ID
+          "complientsreplay.complientsid": complientsid, // assuming req.params.id contains the user's ID
         },
       },
     ])
-    .then((allcomments) => {
-      res.send(allcomments);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
+    res.send(allcomplients);
+    // .then((allcomments) => {
+    //   res.send(allcomments);
+    // })
+    // .catch((err) => {
+    //   res.send(err);
+    // });
 });
 
 module.exports = route;

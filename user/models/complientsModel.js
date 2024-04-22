@@ -19,4 +19,4 @@ const complients = new schema(
     timestamps: true,
   }
 );
-module.exports = mongoose.model("complients", complients);
+module.exports = mongoose.model("complient", complients);
